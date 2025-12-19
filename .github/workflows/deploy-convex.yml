@@ -33,9 +33,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate Convex deploy key format
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+        run: |
+          if [ -z "${CONVEX_DEPLOY_KEY:-}" ]; then
+            echo "Missing secret CONVEX_DEPLOY_KEY."
+            exit 1
+          fi
+          # Expected formats:
+          #   prod:<deploymentName>|<secret>
+          #   preview:<deploymentName>|<secret>
+          case "$CONVEX_DEPLOY_KEY" in
+            prod:*'|'*|preview:*'|'*) ;;
+            *)
+              echo "CONVEX_DEPLOY_KEY is not in the expected format (prod:<deployment>|... or preview:<deployment>|...)."
+              echo "Set the GitHub secret to the raw Deploy Key value from the Convex dashboard (no quotes, no CONVEX_DEPLOY_KEY= prefix)."
+              exit 1
+              ;;
+          esac
+
       - name: Deploy Convex functions (prod)
         env:
-          CONVEX_DEPLOYMENT: ${{ secrets.CONVEX_DEPLOYMENT }}
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
         run: npx convex deploy --yes
 
