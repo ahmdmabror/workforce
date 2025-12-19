@@ -8,6 +8,12 @@ import * as React from 'react'
 import type { QueryClient } from '@tanstack/react-query'
 import appCss from '~/styles/app.css?url'
 
+declare global {
+  // Runtime-injected Convex URL so the browser bundle can use a server-provided value.
+  // eslint-disable-next-line no-var
+  var __CONVEX_URL__: string | undefined
+}
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
@@ -60,10 +66,22 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const convexUrl =
+    (globalThis as any).process?.env?.CONVEX_URL ??
+    (globalThis as any).process?.env?.VITE_CONVEX_URL
+
   return (
     <html>
       <head>
         <HeadContent />
+        {convexUrl ? (
+          <script
+            // This runs before the client bundle executes.
+            dangerouslySetInnerHTML={{
+              __html: `window.__CONVEX_URL__=${JSON.stringify(convexUrl)};`,
+            }}
+          />
+        ) : null}
       </head>
       <body>
         {children}
