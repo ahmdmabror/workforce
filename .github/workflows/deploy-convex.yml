@@ -33,8 +33,5 @@ jobs:
         run: npm ci
 
       - name: Deploy Convex to production
-        run: npx convex deploy
-        env:
-          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
-          CONVEX_SELF_HOSTED_URL: ${{ secrets.CONVEX_SELF_HOSTED_URL }}
+        run: npx convex deploy --admin-key ${{ secrets.CONVEX_ADMIN_KEY }} --url ${{ secrets.CONVEX_URL }}
 
