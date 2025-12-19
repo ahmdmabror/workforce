@@ -6,9 +6,19 @@ import { ConvexProvider } from 'convex/react'
 import { routeTree } from './routeTree.gen'
 
 export function getRouter() {
-  const CONVEX_URL = (import.meta as any).env.VITE_CONVEX_URL!
+  const CONVEX_URL = import.meta.env.VITE_CONVEX_URL
   if (!CONVEX_URL) {
-    console.error('missing envar CONVEX_URL')
+    throw new Error(
+      [
+        'Missing required env var `VITE_CONVEX_URL`.',
+        '',
+        'Local dev:',
+        '- Run `npm run dev` (it runs `convex dev --once` which typically creates `.env.local`).',
+        '',
+        'Deployment:',
+        '- Set `VITE_CONVEX_URL` in your build environment (it must be present at build time).',
+      ].join('\n'),
+    )
   }
   const convexQueryClient = new ConvexQueryClient(CONVEX_URL)
 

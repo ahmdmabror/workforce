@@ -1,0 +1,12 @@
+services:
+  web:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+      args:
+        VITE_CONVEX_URL: ${VITE_CONVEX_URL}
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+
