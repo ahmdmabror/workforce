@@ -32,7 +32,7 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
 # Copy built application from builder stage
-COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
@@ -46,4 +46,4 @@ USER appuser
 EXPOSE 3000
 
 # Start the application
-CMD ["node", ".output/server/index.mjs"]
+CMD ["node", "dist/server/server.js"]
