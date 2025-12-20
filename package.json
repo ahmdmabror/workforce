@@ -12,7 +12,7 @@
     "build": "bun run --filter '*' build",
     "lint": "bun run --filter '*' lint",
     "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
-    "docker:build": "docker build -t workforce-nextjs -f apps/nextjs/Dockerfile .",
+    "docker:build": "docker build -t workforce-nextjs -f Dockerfile.nextjs .",
     "docker:run": "docker run -p 3000:3000 workforce-nextjs"
   },
   "devDependencies": {
