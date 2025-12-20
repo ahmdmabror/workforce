@@ -18,7 +18,6 @@ COPY bunfig.toml* ./
 # Copy workspace package.json files to establish workspace structure
 COPY apps/nextjs/package.json ./apps/nextjs/
 COPY packages/convex/package.json ./packages/convex/
-COPY packages/orpc-service/package.json ./packages/orpc-service/
 
 # Install dependencies
 RUN bun install --frozen-lockfile
@@ -38,7 +37,6 @@ COPY bunfig.toml* ./
 COPY tsconfig.json ./
 COPY apps/nextjs ./apps/nextjs
 COPY packages/convex ./packages/convex
-COPY packages/orpc-service ./packages/orpc-service
 
 # Build the Next.js app
 WORKDIR /app/apps/nextjs
