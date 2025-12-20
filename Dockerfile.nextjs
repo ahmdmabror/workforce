@@ -1,20 +1,25 @@
 # syntax=docker/dockerfile:1
 
 # ============================================
-# Build stage
+# Build stage - Use Node.js for Next.js build
 # ============================================
-FROM oven/bun:1.1.38 AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
+
+# Install bun for dependency management
+RUN npm install -g bun
 
 # Copy everything and build
 COPY . .
 RUN bun install --frozen-lockfile
-RUN bun run --filter @workforce/nextjs build
+
+# Build with Node.js (Next.js build requires Node's worker_threads)
+RUN npm run --prefix apps/nextjs build
 
 # ============================================
-# Production stage
+# Production stage - Use Bun for runtime
 # ============================================
-FROM oven/bun:1.1.38 AS runner
+FROM oven/bun:1.1.38-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
