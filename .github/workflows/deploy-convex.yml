@@ -1,0 +1,38 @@
+name: Deploy Convex
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/convex/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Convex to Self-Hosted
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/convex
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+        working-directory: .
+
+      - name: Deploy Convex
+        run: bunx convex deploy
+        env:
+          CONVEX_SELF_HOSTED_ADMIN_KEY: ${{ secrets.CONVEX_SELF_HOSTED_ADMIN_KEY }}
+          CONVEX_SELF_HOSTED_URL: ${{ secrets.CONVEX_SELF_HOSTED_URL }}
+
