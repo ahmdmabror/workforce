@@ -6,6 +6,10 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+# Build arguments for Next.js public env vars
+ARG NEXT_PUBLIC_CONVEX_URL
+ENV NEXT_PUBLIC_CONVEX_URL=$NEXT_PUBLIC_CONVEX_URL
+
 # Install bun for dependency management
 RUN npm install -g bun
 
