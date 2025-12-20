@@ -1,0 +1,23 @@
+{
+  "name": "workforce",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "nextjs": "bun run --filter @workforce/nextjs dev",
+    "convex": "bun run --filter @workforce/convex dev",
+    "build": "bun run --filter '*' build",
+    "lint": "bun run --filter '*' lint",
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
+    "docker:build": "docker build -t workforce-nextjs -f apps/nextjs/Dockerfile .",
+    "docker:run": "docker run -p 3000:3000 workforce-nextjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "bun@1.1.38"
+}
+
