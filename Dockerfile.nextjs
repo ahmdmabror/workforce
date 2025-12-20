@@ -13,7 +13,8 @@ RUN npm install -g bun
 COPY . .
 RUN bun install --frozen-lockfile
 
-# Build with Node.js (Next.js build requires Node's worker_threads)
+# Disable telemetry and build with Node.js
+RUN npx --prefix apps/nextjs next telemetry disable
 RUN npm run --prefix apps/nextjs build
 
 # ============================================
